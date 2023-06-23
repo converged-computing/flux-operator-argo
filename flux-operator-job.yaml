@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: hello-operator-job-
+  labels:
+    workflows.argoproj.io/archive-strategy: "false"
+  annotations:
+    workflows.argoproj.io/description: |
+      This is an example of running the Flux Operator
+spec:
+  entrypoint: flux-tmpl
+  templates:
+  - name: flux-tmpl
+
+    # This indicates a resource template
+    resource:
+      action: create
+      # For more details: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+      # If successCondition is true, the step is considered successful.
+      successCondition: status.completed == true      
+      # If failureCondition is true, the step is considered failed.
+      # failureCondition: status.failed > 4
+      manifest: |
+        apiVersion: flux-framework.org/v1alpha1
+        kind: MiniCluster
+        metadata:
+          generateName: flux-
+          namespace: argo
+        spec:
+          # suppress all output except for test run
+          logging:
+            quiet: true
+
+          # Number of pods to create for MiniCluster
+          size: 2
+
+          # This is a list because a pod can support multiple containers
+          containers:
+            - image: ghcr.io/flux-framework/flux-restful-api:latest
+              command: echo hello world

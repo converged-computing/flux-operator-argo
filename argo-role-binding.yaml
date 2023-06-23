@@ -1,0 +1,22 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"rbac.authorization.k8s.io/v1","kind":"RoleBinding","metadata":{"annotations":{},"name":"argo-binding","namespace":"argo"},"roleRef":{"apiGroup":"rbac.authorization.k8s.io","kind":"Role","name":"argo-role"},"subjects":[{"kind":"ServiceAccount","name":"argo","namespace":"argo"}]}
+  creationTimestamp: "2023-06-23T03:21:27Z"
+  name: argo-binding
+  namespace: argo
+  resourceVersion: "329"
+  uid: 56034b9d-e91a-4a0a-8983-71f5dc3bf899
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: argo-role
+subjects:
+- kind: ServiceAccount
+  name: argo
+  namespace: argo
+- kind: ServiceAccount
+  name: default
+  namespace: argo
